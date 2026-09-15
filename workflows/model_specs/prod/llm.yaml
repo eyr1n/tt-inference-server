@@ -2897,3 +2897,38 @@ templates:
         # A request must leave one full output canvas inside max_context.
       max_effective_input_tokens: 261888
 
+- weights:
+    - Qwen/Qwen3.8-27B
+  version: "0.21.0"
+  tt_metal_commit: "41f94cb"
+  vllm_commit: "f1593cb"
+  impl: qwen36_blackhole
+  inference_engine: VLLM
+  model_type: LLM
+  supported_modalities:
+    - text
+  device_model_specs:
+    - device: T3K
+      max_concurrency: 32
+      max_context: 131072
+      max_tokens_all_users_override: 131072
+      default_impl: true
+      env_vars:
+        HF_MODEL: Qwen/Qwen3.8-27B
+        MESH_DEVICE: "T3K"
+        QWEN36_MAX_TOKENS_ALL_USERS: "131072"
+      vllm_args:
+        enable_auto_tool_choice: true
+        reasoning_parser: qwen3
+        tool_call_parser: qwen3_coder
+      override_tt_config:
+        fabric_config: FABRIC_1D
+        trace_region_size: 1073741824
+        l1_small_size: 24576
+        sample_on_device_mode: decode_only
+  status: EXPERIMENTAL
+  has_builtin_warmup: true
+  metadata:
+    Qwen/Qwen3.8-27B:
+      reasoning_parser_name: qwen3
+      tool_call_parser_name: qwen3_coder
